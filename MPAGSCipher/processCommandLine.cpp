@@ -3,12 +3,13 @@
 #include <cctype>
 #include <vector>
 #include <fstream>
+#include <stoul>
 
 #include "processCommandLine.hpp"
 
 
 
-bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName)
+bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName, size_t& ckey)
 {
 
 
@@ -56,12 +57,27 @@ bool processCommandLine(const std::vector<std::string>& args, bool& helpRequeste
 	++i;
       }
     }
+
+    else if (args[i] == "-k") {
+      if (i == nCmdLineArgs-1) {
+
+	std::cerr << "[error] -k requires a key argument" << std::endl;
+	// exit main with non-zero return to indicate failure
+	return false;
+      else {
+	//change key string to an interger
+	ckey = std::stoul (const std::string& args[i+1]
+      }
+
     else {
       // Have an unknown flag to output error message and return non-zero
       // exit status to indicate failure
       std::cerr << "[error] unknown argument '" << args[i] << "'\n";
       return false;
     }  
+
+
+
   }
 
 return true;
