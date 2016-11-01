@@ -3,14 +3,13 @@
 #include <cctype>
 #include <vector>
 #include <fstream>
-#include <stoul>
+#include <cstddef>
 
 #include "processCommandLine.hpp"
 
 
 
-bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName, size_t& ckey)
-{
+bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName, size_t& key, bool& encrypt, bool& decrypt ) {
 
 
   // Add a typedef that assigns another name for the given type for clarity
@@ -64,19 +63,31 @@ bool processCommandLine(const std::vector<std::string>& args, bool& helpRequeste
 	std::cerr << "[error] -k requires a key argument" << std::endl;
 	// exit main with non-zero return to indicate failure
 	return false;
+      }
       else {
 	//change key string to an interger
-	ckey = std::stoul (const std::string& args[i+1]
+	key = std::stoul (args[i+1]);
+        ++i;
       }
+    }
+    // Find out whether user has asked from encryption/decryption
+    else if (args[i] == "-caeserencrypt") {
+      encrypt = true;
+    }
+    else if (args[i] == "-caeserdecrypt") {
+      decrypt = true;
+    }
 
     else {
       // Have an unknown flag to output error message and return non-zero
       // exit status to indicate failure
       std::cerr << "[error] unknown argument '" << args[i] << "'\n";
       return false;
-    }  
+    }
+     
+       
 
-
+    
 
   }
 

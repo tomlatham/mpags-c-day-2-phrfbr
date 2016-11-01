@@ -7,6 +7,6 @@
 #include <vector>
 #include <fstream>
 
-std::string runCaesarCipher( const std::string& inputText, const size_t key, const bool encrypt );
+std::string runCaesarCipher( std::string& inputText, const size_t& key, const bool encrypt, const bool decrypt );
 
 #endif // MPAGSCIPHER_RUNCAESERCIPHER_HPP

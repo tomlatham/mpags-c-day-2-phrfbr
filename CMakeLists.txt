@@ -24,7 +24,7 @@ set (CMAKE_CXX_FLAGS "-Wall -Werror -Wfatal-errors -Wshadow -pedantic")
 
 # - Declare the build of mpags-cipher main program
 
-add_executable(mpags-cipher mpags-cipher.cpp MPAGSCipher/TransformChar.hpp MPAGSCipher/TransformChar.cpp  MPAGSCipher/processCommandLine.hpp MPAGSCipher/processCommandLine.cpp)
+add_executable(mpags-cipher mpags-cipher.cpp MPAGSCipher/TransformChar.hpp MPAGSCipher/TransformChar.cpp  MPAGSCipher/processCommandLine.hpp MPAGSCipher/processCommandLine.cpp MPAGSCipher/runCaeserCipher.cpp MPAGSCipher/runCaeserCipher.hpp)
 
 target_include_directories(mpags-cipher PRIVATE MPAGSCipher)
 

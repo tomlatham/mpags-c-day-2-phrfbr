@@ -9,6 +9,7 @@
 // Our project Headers
 #include "TransformChar.hpp"
 #include "processCommandLine.hpp"
+#include "runCaeserCipher.hpp"
 
 
 // Main function of the mpags-cipher program
@@ -17,6 +18,11 @@ int main(int argc, char* argv[])
   // Convert the command-line arguments into a more easily usable form
   const std::vector<std::string> cmdLineArgs {argv, argv+argc};
 
+  size_t key{5};
+  bool encrypt {false};
+  bool decrypt {false};
+  std::string cipherout {""};
+
   
   // Options that might be set by the command-line arguments
   bool helpRequested {false};
@@ -24,7 +30,7 @@ int main(int argc, char* argv[])
   std::string inputFile {""};
   std::string outputFile {""};
 
-  processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile);
+  processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, key, encrypt, decrypt );
   
 
   // Handle help, if requested
@@ -39,7 +45,12 @@ int main(int argc, char* argv[])
       << "  -i FILE          Read text to be processed from FILE\n"
       << "                   Stdin will be used if not supplied\n\n"
       << "  -o FILE          Write processed text to FILE\n"
-      << "                   Stdout will be used if not supplied\n\n";
+      << "                   Stdout will be used if not supplied\n\n"
+      << "  -k KEY           Define key to be used in cipher (e.g. -k 5)\n"
+      << "                   Note: To minimise errors this should be between 1 and 25\n"
+      << "  -caeserencrypt   Encrypt using caeser cipher\n\n"
+      << "  -caeserdecrypt   Decrypt using caeser cipher\n\n"
+      << "                   NOTE: Can only perform one of either encrypt or decrypt\n\n";
     // Help requires no further action, so return from main
     // with 0 used to indicate success
     return 0;
@@ -84,6 +95,10 @@ int main(int argc, char* argv[])
 
   }
   // Output the transliterated text
+
+  // Run Caeser Cipher 
+  runCaesarCipher(inputText, key, encrypt, decrypt ); 
+
   // Warn that output file option not yet implemented
   if (!outputFile.empty()) {
     std::ofstream out_file {outputFile};
