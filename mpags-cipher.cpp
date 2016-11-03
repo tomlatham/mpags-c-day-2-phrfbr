@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-// For std::isalpha and std::isupper
-#include <cctype>
 
 // Our project Headers
 #include "TransformChar.hpp"
@@ -18,19 +16,22 @@ int main(int argc, char* argv[])
   // Convert the command-line arguments into a more easily usable form
   const std::vector<std::string> cmdLineArgs {argv, argv+argc};
 
-  size_t key{5};
-  bool encrypt {false};
-  bool decrypt {false};
-  std::string cipherout {""};
-
-  
   // Options that might be set by the command-line arguments
   bool helpRequested {false};
   bool versionRequested {false};
   std::string inputFile {""};
   std::string outputFile {""};
+  size_t key{5};
+  bool useCaesarCipher {false};
+  bool encrypt {false};
 
-  processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, key, encrypt, decrypt );
+  bool cmdLineProcessedOK { processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, key, useCaesarCipher, encrypt ) };
+
+  // If there was a problem processing the command line arguments we should not proceed further
+  if ( !cmdLineProcessedOK ) {
+    std::cerr << "ERROR: Problem parsing command line arguments" << std::endl;
+    return 1;
+  }
   
 
   // Handle help, if requested
@@ -97,22 +98,27 @@ int main(int argc, char* argv[])
   // Output the transliterated text
 
   // Run Caeser Cipher 
-  runCaesarCipher(inputText, key, encrypt, decrypt ); 
+  std::string outputText {""};
+  if ( useCaesarCipher ) {
+    outputText = runCaesarCipher(inputText, key, encrypt);
+  } else {
+    outputText = inputText;
+  }
 
   // Warn that output file option not yet implemented
   if (!outputFile.empty()) {
     std::ofstream out_file {outputFile};
     bool ok_to_write = out_file.good();
     if (ok_to_write) {
-      out_file << inputText << std::endl;
+      out_file << outputText << std::endl;
     }
     else {
-      std::cout << "ERROR: Outfile not ok to write\n" << std::endl;
-      std::cout << "Input text is \t" << inputText << std::endl;
+      std::cerr << "ERROR: Outfile not ok to write\n" << std::endl;
+      std::cout << outputText << std::endl;
     }
   }
   else {
-    std::cout << inputText << std::endl;
+    std::cout << outputText << std::endl;
   }
 
   

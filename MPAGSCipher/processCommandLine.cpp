@@ -2,14 +2,13 @@
 #include <string>
 #include <cctype>
 #include <vector>
-#include <fstream>
 #include <cstddef>
 
 #include "processCommandLine.hpp"
 
 
 
-bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName, size_t& key, bool& encrypt, bool& decrypt ) {
+bool processCommandLine(const std::vector<std::string>& args, bool& helpRequested, bool& versionRequested, std::string& inputFileName, std::string& outputFileName, size_t& key, bool& useCaesarCipher, bool& encrypt ) {
 
 
   // Add a typedef that assigns another name for the given type for clarity
@@ -72,10 +71,12 @@ bool processCommandLine(const std::vector<std::string>& args, bool& helpRequeste
     }
     // Find out whether user has asked from encryption/decryption
     else if (args[i] == "-caeserencrypt") {
+      useCaesarCipher = true;
       encrypt = true;
     }
     else if (args[i] == "-caeserdecrypt") {
-      decrypt = true;
+      useCaesarCipher = true;
+      encrypt = false;
     }
 
     else {
@@ -84,14 +85,10 @@ bool processCommandLine(const std::vector<std::string>& args, bool& helpRequeste
       std::cerr << "[error] unknown argument '" << args[i] << "'\n";
       return false;
     }
-     
-       
-
-    
 
   }
 
-return true;
+  return true;
 
 }
 
